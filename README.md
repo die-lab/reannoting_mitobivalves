@@ -1,5 +1,5 @@
 # reannoting_mitobivalves
-Methods and plots of the project!
+Methods of the project!
 
 This repository wants to be a step-by-step guide of the analyses, while giving you the chance to run it again by your own, custom data.
 I suggest to `git clone` the current repository, 'cause you will need some of its scritps.
@@ -18,12 +18,19 @@ I have extracted every gene's sequence (nucleotide and protein type) from gb fil
 ```
 for gb_file in $(ls *.gb); do python extracting_feature_v6.py $gb_file; mkdir ${gb_file%.gb}_extraction; mv *.fasta ${gb_file%.gb}_extraction; done
 ```
-Annotations do not follow a golden rule, so I have used a dictionary to assign every name to the 13 mitochondrial genes. You can see it a the begininnig *extracting_feature_v6.py*. Your data can have some genes named differently. I suggest to check manually for bad annotation.
+Annotations do not follow a golden rule, so I have used a dictionary to assign every name to the 13 mitochondrial genes. You can see it a the begininnig *extracting_feature_v6.py*. Your data can have some genes named differently. I also suggest to check manually for bad annotation. Mine were *annotation_mistakes.txt*
 
 For each group of organisms, move the two type of sequences to different places.
 ```
 for i in *_extraction; do cd $i; mkdir $i'_nucl'; mkdir $i'_prot'; mv *_nucl.fasta $i'_nucl'; mv *_prot.fasta $i'_prot'; cd ..; done
 ```
+
+## Start and stop codons plotting
+I wanted to see what was the distribution of start codons along genes, taking the in frame reading. I have used *start_codons_check_v5* and *stop_codons_check_v2*. You can run everything together using the below command. You have to run it in the home directory of the project, where you have [class]*.gb files, [class]_extraction directories and scripts. 
+```
+for i in *extraction; do cd $i; mkdir $i'_start_codons_distribution'; mkdir $i'_stop_codons_distribution'; cd $i'_nucl'; python ../../start_codons_check_v5.py ../../${i%_extraction}.gb > ../$i'_start_codons_distribution'/$i'_start.log'; mv *.svg ../$i'_start_codons_distribution'/.;python ../../stop_codons_check_v2.py ../../${i%_extraction}.gb > ../$i'_stop_codons_distribution'/$i'_stop.log'; mv *.svg ../$i'_stop_codons_distribution'/.; cd ../../.; done
+```
+
 
 
 
