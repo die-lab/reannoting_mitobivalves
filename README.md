@@ -31,14 +31,16 @@ I wanted to see what was the distribution of start codons along genes, taking th
 for i in *extraction; do cd $i; mkdir $i'_start_codons_distribution'; mkdir $i'_stop_codons_distribution'; cd $i'_nucl'; python ../../start_codons_check_v5.py ../../${i%_extraction}.gb > ../$i'_start_codons_distribution'/$i'_start.log'; mv *.svg ../$i'_start_codons_distribution'/.;python ../../stop_codons_check_v2.py ../../${i%_extraction}.gb > ../$i'_stop_codons_distribution'/$i'_stop.log'; mv *.svg ../$i'_stop_codons_distribution'/.; cd ../../.; done
 ```
 
-## length datasets
-Get every genes length of your mitochondrial datasets using *detect_unusual_length_v3.py* and *detect_start_codon_usage.py*.
+## Length and start codons datasets
+Get every genes length and start codon usage of your mitochondrial datasets using *detect_unusual_length_v3.py* and *detect_start_codon_usage.py*.
 ```
 for i in *extraction; do cd $i; mkdir $i'_start_codons_distribution'; mkdir $i'_stop_codons_distribution'; cd $i'_nucl'; python ../../detect_unusual_length_v3.py > ../${i%_extraction}_length_dataset.tsv; python ../../detect_start_codon_usage.py > ../${i%_extraction}_start_codon_dataset.tsv; cd ../../.; done
 ```
 
-## tree topology and reordering
-I have run ML tree inference with modelfinder and 100 bootstraps on align, trim and concatenated genes for each group. I need it mostly because I wanted to see if genes' length and start codons were phylogenetically conserved, at least at the order level. Once You have the tree you have to retrieve the list of species as displayed plotting the tree. You need to reorder each *[class]_length_datasets.tsv* and *[class]_start_codon_dataset.tsv* accordingly to its tree.
+## Tree topology and reordering
+I have run ML tree inference with modelfinder and 100 bootstraps on align, trim and concatenated genes for each group. I need it mostly because I wanted to see if genes' length and start codons were phylogenetically conserved, at least at the order level. Once You have the tree you have to retrieve the list of species as displayed plotting the tree. You need to reorder each *[class]_length_datasets.tsv* and *[class]_start_codon_dataset.tsv* accordingly to its tree. Now plot everything together!
+
+
 
 
 
