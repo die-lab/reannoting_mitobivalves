@@ -7,7 +7,7 @@ I suggest to `git clone` the current repository, 'cause you will need some of it
 ## Download and build datasets
 I have searched for mitochondrial genomes on ncbi by command line, using the below command.
 You can use different classes of organisms, just editing the *metazoa_list.txt*.
-It would be a good idea to see how many mitochondrial we are going to downlaod checking that type of query on the browser [browser](https://www.ncbi.nlm.nih.gov/).
+It would be a good idea to see how many mitochondrial we are going to downlaod checking that type of query on the [browser](https://www.ncbi.nlm.nih.gov/).
 ```
 for class in $(cat metazoa_list.txt); do esearch -db nuccore -query "("$class"[Organism] AND mitochondrion[All Fields] AND complete[All Fields]" | efetch -format gb >> $class'.gb'; done 
 ```
