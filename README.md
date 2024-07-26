@@ -1,6 +1,9 @@
 # reannoting_mitobivalves
 Methods of the project!
 
+[![Evolution2024 Poster](/assets/images/shiprock.jpg "Shiprock, New Mexico by Beau Rogers")](https://github.com/die-lab/reannoting_mitobivalves/blob/main/DEFINITIVO.dc_EVOLUTION2024.pdf)
+
+
 This repository wants to be a step-by-step guide of the analyses, while giving you the chance to run it again by your own, custom data.
 I suggest to `git clone` the current repository, 'cause you will need some of its scritps.
 
@@ -18,7 +21,7 @@ I have extracted every gene's sequence (nucleotide and protein type) from gb fil
 ```
 for gb_file in $(ls *.gb); do python extracting_feature_v6.py $gb_file; mkdir ${gb_file%.gb}_extraction; mv *.fasta ${gb_file%.gb}_extraction; done
 ```
-Annotations do not follow a golden rule, so I have used a dictionary to assign every name to the 13 mitochondrial genes. You can see it a the begininnig *extracting_feature_v6.py*. Your data can have some genes named differently. I also suggest to check manually for bad annotation. Mine were *annotation_mistakes.txt*
+Annotations do not follow a golden rule, so I have used a dictionary to assign every name to the 13 mitochondrial genes. You can see it a the begininnig of *extracting_feature_v6.py*. Your data can have some genes named differently. I also suggest to check manually for bad annotation. Although being uncommon, some mitochondrial genomes can have multiple copy of a genes too. It happend for a couple of genes in bivalves and for complex III,IV and IV of Oegopsida, in cephalopods. While It has been easy to identify the "real" copy in bivalves, in cephalopods they are so conserved that it would have been impossible to find the working one (even because they are both expressed), so I have considered only the first met on annotation. 
 
 For each group of organisms, move the two type of sequences to different places.
 ```
