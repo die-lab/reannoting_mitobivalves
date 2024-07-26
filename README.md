@@ -1,8 +1,7 @@
 # reannoting_mitobivalves
 Methods of the project!
 
-![Evolution2024 Poster!](https://github.com/die-lab/reannoting_mitobivalves/blob/main/DEFINITIVO.dc_EVOLUTION2024.jpeg "You can download pdf or jpeg versions from somethere in the current directory")
-
+![Evolution2024 Poster!](https://github.com/die-lab/reannoting_mitobivalves/blob/main/DEFINITIVO.dc_EVOLUTION2024.jpeg)
 
 This repository wants to be a step-by-step guide of the analyses, while giving you the chance to run it again by your own, custom data.
 I suggest to `git clone` the current repository, 'cause you will need some of its scritps.
