@@ -1,5 +1,3 @@
-#![Evolution2024 Poster!](https://github.com/die-lab/reannoting_mitobivalves/blob/main/DEFINITIVO.dc_EVOLUTION2024.jpg "You can download pdf or jpeg versions from somethere in the current directory")
-
 # reannoting_mitobivalves
 Methods of the project!
 
@@ -40,7 +38,9 @@ for i in *extraction; do cd $i; mkdir $i'_start_codons_distribution'; mkdir $i'_
 ```
 
 ## tree topology and reordering
-I have run ML tree inference with modelfinder and 100 bootstraps on align, trim and concatenated genes for each group. I need it mostly because I wanted to see if genes' length and start codons were phylogenetically conserved, at least at the order level. Once You have the tree you have to retrieve the list of species as displayed plotting the tree. You need to reorder each *[class]_length_datasets.tsv* and *[class]_start_codon_dataset.tsv* accordingly to its tree. 
+I have run ML tree inference with modelfinder and 100 bootstraps on align, trim and concatenated genes for each group. I need it mostly because I wanted to see if genes' length and start codons were phylogenetically conserved, at least at the order level. Once You have the tree you have to retrieve the list of species as displayed plotting the tree. You need to reorder each *[class]_length_datasets.tsv* and *[class]_start_codon_dataset.tsv* accordingly to its tree.
+
+
 
 
 
