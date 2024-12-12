@@ -101,11 +101,46 @@ sd_diff_per_gene <- weighted_sd_per_class_gene %>%
 # Step 3: Find the gene with the maximum difference in weighted standard deviation
 max_diff_gene <- sd_diff_per_gene %>%
   filter(SD_Diff == max(SD_Diff, na.rm = TRUE))
-
 # Output the full list of genes with max and min SD and the difference
 sd_diff_per_gene
 # Output the gene with the maximum difference in SD
 max_diff_gene
+
+##make a table with wighted standard deviation values
+wsd_table <- data.frame()
+
+for (gene in gene_length_columns) {
+  # Initialize a vector to store WSD for this gene
+  wsd_row <- c()
+    for (class in unique(df$Class)) {
+    # Filter data for the current class
+    class_data <- df[df$Class == class, ]
+        # Extract the gene lengths for the current gene in the current class
+    gene_lengths <- class_data[[gene]]
+        # Safeguard against missing values
+    if (all(is.na(gene_lengths))) {
+      wsd_row <- c(wsd_row, NA)
+      next
+    }
+        # Get the number of observations in the current class
+    n_class <- sum(!is.na(gene_lengths))
+        # Calculate weighted mean
+    weighted_mean <- sum(gene_lengths, na.rm = TRUE) / n_class
+        # Calculate weighted variance
+    weighted_variance <- sum((gene_lengths - weighted_mean)^2, na.rm = TRUE) / n_class
+        # Calculate weighted standard deviation
+    weighted_sd <- sqrt(weighted_variance)
+        # Append WSD for this class to the row
+    wsd_row <- c(wsd_row, weighted_sd)
+  }
+    # Add WSD row to the table
+  wsd_table <- rbind(wsd_table, wsd_row)
+}
+rownames(wsd_table) <- gene_length_columns
+colnames(wsd_table) <- unique(df$Class)
+wsd_table <- as.data.frame(wsd_table)
+wsd_table
+
 
 ##plot it
 ggplot(weighted_sd_per_class_gene, aes(x = Class, y = Weighted_SD, fill = Class)) +
