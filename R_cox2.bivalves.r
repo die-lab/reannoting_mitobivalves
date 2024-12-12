@@ -3,6 +3,7 @@
 library(ggplot2)
 library(car)
 library(gridExtra)
+library(dplyr)
 library(tidyr)
 
 df <- read.csv("class_tree_datasets.csv", sep=";")
@@ -63,7 +64,8 @@ do.call(grid.arrange, c(plots, ncol = 3))  # Adjust ncol for the number of colum
 
 
 ## find for each gene which classes has the highest weighted standard deviation
-library(dplyr)
+gene_length_columns <- grep("ene_length", names(df), value = TRUE)
+
 
 # Step 1: Calculate the weighted standard deviation for each gene and class (same as previous steps)
 weighted_sd_per_class_gene <- data.frame(Class = character(), Gene = character(), Weighted_SD = numeric())
