@@ -1,36 +1,41 @@
 #setwd to the right dir
 
 library(ggplot2)
+library(ggforce)
 library(car)
 library(gridExtra)
 library(dplyr)
 library(tidyr)
 
-df <- read.csv("class_tree_datasets.csv", sep=";")
-table(as.factor(dataset$Class))
+setwd("/home/PERSONALE/diego.carli2/gabri")
 
-#fix the Order field, taking from taxonomy
-extract_fourth_last_word <- function(taxonomy) {
-  # Split the taxonomy string by spaces
-  taxonomy_split <- unlist(strsplit(taxonomy, ";"))
-  # Check if the taxonomy has at least 4 words
-  if (length(taxonomy_split) >= 4) {
-    # Return the fourth last word
-    return(taxonomy_split[length(taxonomy_split) - 3])
+df <- read.csv("class_tree_datasets.csv", sep=";")
+table(as.factor(df$Class))
+
+# Read the dataset and bivalve orders
+df <- read.csv("class_tree_datasets.csv", sep=";")
+bivalve_orders <- read.csv("bivalves.order.list", header = FALSE, stringsAsFactors = FALSE)
+bivalve_orders_vec <- as.character(bivalve_orders$V1)
+find_order <- function(taxonomy, orders) {
+  components <- unlist(strsplit(taxonomy, ";"))  # Split the taxonomy into components
+  match <- orders[orders %in% components]  # Find the orders in the taxonomy
+  if (length(match) > 0) {
+    return(match[1])  # Return the first matching order
   } else {
-    # If there are less than 4 words, return NA or the full taxonomy as fallback
-    return(NA)
+    return(NA)  # Return NA if no match is found
   }
 }
-df$Order <- sapply(df$Taxonomy, extract_fourth_last_word)
+df$Order <- sapply(df$Taxonomy, function(taxonomy) find_order(taxonomy, bivalve_orders_vec))
 
+data <- df[df$Class=="Bivalvia",]
 #plotting mitochondrial length per class
-ggplot(df, aes(x = Class, y = Mitochondrial_length)) +
+ggplot(data, aes(x = Order, y = COX2_Gene_length)) +
   geom_boxplot() +           # Use boxplot to show the distribution
   theme_minimal() +          # Apply a clean theme
   labs(title = "Mitochondrial Length by Class",
        x = "Class",
-       y = "Mitochondrial Length")
+       y = "Mitochondrial Length") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ##ARE THEY SIGNIFICANTLY DIFFERENT?
 anova_result <- aov(Mitochondrial_length ~ Class, data = df)
@@ -129,7 +134,7 @@ for (gene in gene_length_columns) {
         # Calculate weighted variance
     weighted_variance <- sum((gene_lengths - weighted_mean)^2, na.rm = TRUE) / n_class
         # Calculate weighted standard deviation
-    weighted_sd <- sqrt(weighted_variance)
+    weighted_sd <- round(sqrt(weighted_variance), digits = 2)
         # Append WSD for this class to the row
     wsd_row <- c(wsd_row, weighted_sd)
   }
@@ -143,16 +148,25 @@ wsd_table
 
 
 ##plot it
-ggplot(weighted_sd_per_class_gene, aes(x = Class, y = Weighted_SD, fill = Class)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  facet_wrap(~Gene, scales = "free_y") +  # One plot for each gene
+wsd_table_long <- gather(wsd_table, key = "Taxonomy", value = "Gene_length", -Gene)
+
+# Print the reshaped data to check
+head(wsd_table_long)
+
+# Create bar plots for each gene length using ggplot2
+ggplot(wsd_table_long, aes(x = Taxonomy, y = Gene_length, fill = Taxonomy)) +
+  geom_bar(stat = "identity", position = "dodge", color = "black") +  # Bar plot
+  facet_wrap(~ Gene, scales = "free_y", ncol = 4) +  # Facet by Gene (4 columns per row)
+  labs(title = "Gene Lengths by Taxonomy",
+       x = "Taxonomy",
+       y = "Gene Length") +
+       coord_cartesian(ylim = c(0,200))
   theme_minimal() +
-  labs(title = "Weighted Standard Deviation of Gene Lengths per Gene and Class",
-       x = "Class", y = "Weighted Standard Deviation") +
-  scale_fill_brewer(palette = "Set3") +  # Use a color palette for distinction
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
-        legend.title = element_text(size = 10),  # Adjust legend title size
-        legend.text = element_text(size = 8))  # Adjust legend text size
+  theme(legend.position = "none")
+
+
+
+
 
 ####the same as before, but this time it gives me the Order along the most contributing to the standard deviation differences
 # Step 1: Identify the gene with the maximum difference in weighted standard deviation (already found)
@@ -200,4 +214,4 @@ ranked_contributors <- residuals_per_gene_class %>%
 ranked_contributors_output <- ranked_contributors %>%
   select(Rank, Mitochondrial_genomes_codes, Order, Squared_Residual, Gene)
 # Step 7: View the ranked contributors with the order, mitochondrial genome codes, and rank
-head(ranked_contributors_output,20)
+head(ranked_contributors_output,50)
