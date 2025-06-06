@@ -1,6 +1,6 @@
 ![Here's the poster I've presented at EVOLUTION 2024!](/DEFINITIVO.dc_EVOLUTION2024.pdf)
 
-[DEFINITIVO.dc_EVOLUTION2024 (1).pdf](https://github.com/user-attachments/files/20620296/DEFINITIVO.dc_EVOLUTION2024.1.pdf)
+![Image](https://github.com/user-attachments/assets/ab5ffcfa-1827-4d46-bcfc-19a1ed488c24)
 
 # reannoting_mitobivalves
 Methods of the project!
